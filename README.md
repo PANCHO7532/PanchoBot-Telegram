@@ -19,5 +19,10 @@ Well it ain't much at this time, probably i will add more features soon.
 ## Try It/Demo
 You can try this code in my bot: PanchoBot in Telegram, you can start using it by going to: https://t.me/Pancho7Bot - go and test it!!!
 
-## Known Bugs and Warnings
-Nothing yet i guess, the /ytdl command it would be a bit unstable as i coded it asleep in my keyboard, if you find an bug, feel free to go to the issues section and share your problem (anyway nobody comes to my GitHub profile :'3)
+## Bugs, Warnings and Source code updates
+The /ytdl command it would be a bit unstable as i coded it asleep in my keyboard, if you find an bug, feel free to go to the issues section and share your problem (anyway nobody comes to my GitHub profile :'3)
+
+Update 2.0.1 (15/08/2019):
+- Fixed bug where heavy MP4 720p aren't sent in Telegram due an server error. (limitations probably)
+- catch() based exceptions to handle non-deliverable content (by mime/type limitations and size limitations)
+- Fixed source-code (i uploaded an incorrect version to GitHub lol)

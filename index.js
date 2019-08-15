@@ -2,11 +2,11 @@ console.log("PanchoBot v2.01 - Telegram");
 var request = require('request');
 var tbot = require("node-telegram-bot-api");
 var ytdl = require("ytdl-core");
-var util = require("util");
 var token = "your_telegram_bot_token_here";
 const bot = new tbot(token, {polling: true});
-var scapikey = "your_soundcloud_api_key_here";
-
+var scapikey = "your_soundcloud_api_token_here";
+var ytdl_linkstorage = [];
+bot.on("polling_error", (err) => console.log(err));
 bot.on("message", function(message){
     if(message.text.substring(0, 20) == "/download_soundcloud") {
         if(!message.text.substring(21) || message.text.substring(21) == "") {
@@ -113,15 +113,22 @@ bot.on("message", function(message){
             if(stage2[videoc].substring(5, message.text.substring(16).length + 5) == message.text.substring(16)) {
                 var stage3a = stage2[videoc].split("|");
                 //console.log(stage3[1]);
-                if(stage3a[0].indexOf("webm") != -1) {
-                    bot.sendMessage(message.chat.id, "\u{23E9} Link de descarga: " + stage3a[1]);
-                    ytdl_linkstorage[message.from.id] = "null";
-                    return;
-                } else {
-                    bot.sendVideo(message.chat.id, stage3a[1]);
-                    ytdl_linkstorage[message.from.id] = "null";
-                    return;
-                }
+                bot.sendVideo(message.chat.id, stage3a[1]).catch((error) => {
+                    if(error.code == "ETELEGRAM") {
+                        bot.sendMessage(message.chat.id, "\u{23E9} Link de descarga: " + stage3a[1]);
+                        ytdl_linkstorage[message.from.id] = "null";
+                        console.log(error.response.body);
+                        return;
+                    }
+                    if(error.code == "EFATAL") {
+                        bot.sendMessage(message.chat.id, "\u{26D4} EFATAL: Tu solicitud no ha podido ser realizada con exito, intenta mas tarde.");
+                        ytdl_linkstorage[message.from.id] = "null";
+                        console.log(error.response.body);
+                        return;
+                    }
+                });
+                ytdl_linkstorage[message.from.id] = "null";
+                return;
             }
         }
     }
@@ -147,15 +154,20 @@ bot.on("message", function(message){
             if(stage2a[audioc].substring(5, message.text.substring(16).length + 5) == message.text.substring(16)) {
                 var stage3a = stage2a[audioc].split("|");
                 //console.log("stage3: " + stage3a);
-                if(stage3a[0].indexOf("webm") != -1 || stage3a[0].indexOf("m4a") != -1) {
-                    bot.sendMessage(message.chat.id, "\u{23E9} Link de descarga: " + stage3a[1]);
-                    ytdl_linkstorage[message.from.id] = "null";
-                    return;
-                } else {
-                    bot.sendAudio(message.chat.id, stage3a[1]);
-                    ytdl_linkstorage[message.from.id] = "null";
-                    return;
-                }
+                bot.sendDocument(message.chat.id, stage3a[1]).catch((error) => {
+                    if(error.code == "ETELEGRAM") {
+                        bot.sendMessage(message.chat.id, "\u{23E9} Link de descarga: " + stage3a[1]);
+                        ytdl_linkstorage[message.from.id] = "null";
+                        console.log(error.response.body);
+                        return;
+                    }
+                    if(error.code == "EFATAL") {
+                        bot.sendMessage(message.chat.id, "\u{26D4} EFATAL: Tu solicitud no ha podido ser realizada con exito, intenta mas tarde.");
+                        ytdl_linkstorage[message.from.id] = "null";
+                        console.log(error.response.body);
+                        return;
+                    }
+                });
             }
         }
     }

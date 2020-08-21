@@ -8,10 +8,31 @@
 * or code redistribution/packaging.
 */
 const telegramApi = require('node-telegram-bot-api');
-const botToken = "YOUR_TELEGRAM_TOKEN_HERE";
-const botUsername = "YOUR_BOT_USERNAME";
-const scapikey = "YOUR_SOUNDCLOUD_APIKEY_HERE";
+var botToken = "YOUR_TELEGRAM_TOKEN_HERE";
+var botUsername = "YOUR_BOT_USERNAME";
+var scapikey = "YOUR_SOUNDCLOUD_APIKEY_HERE";
+var showHelp = false;
 const bot = new telegramApi(botToken, {polling: true});
+for(c = 0; c < process.argv.length; c++) {
+    switch(process.argv[c]) {
+        case "--botToken":
+        case "-bt":
+            botToken = process.argv[c+1];
+            break;
+        case "--botUsername":
+        case "-bu":
+            botUsername = process.argv[c+1];
+            break;
+        case "--scApiKey":
+        case "-sak":
+            scapikey = process.argv[c+1];
+            break;
+        case "--help":
+        case "-h":
+            showHelp = true;
+            break;
+    }
+}
 function fetchSoundcloud(sclink) {
     var c1 = require('sync-request')("GET", "https://api.soundcloud.com/resolve?url=" + sclink + "&client_id=" + scapikey);
     if(c1["statusCode"] == 404) {

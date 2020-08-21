@@ -12,7 +12,6 @@ var botToken = "YOUR_TELEGRAM_TOKEN_HERE";
 var botUsername = "YOUR_BOT_USERNAME";
 var scapikey = "YOUR_SOUNDCLOUD_APIKEY_HERE";
 var showHelp = false;
-const bot = new telegramApi(botToken, {polling: true});
 for(c = 0; c < process.argv.length; c++) {
     switch(process.argv[c]) {
         case "--botToken":
@@ -33,6 +32,7 @@ for(c = 0; c < process.argv.length; c++) {
             break;
     }
 }
+const bot = new telegramApi(botToken, {polling: true});
 function fetchSoundcloud(sclink) {
     var c1 = require('sync-request')("GET", "https://api.soundcloud.com/resolve?url=" + sclink + "&client_id=" + scapikey);
     if(c1["statusCode"] == 404) {
@@ -52,7 +52,7 @@ bot.on('message', function(message) {
     if(message.text == "/ping" || message.text == "/ping@" + botUsername) {
         bot.sendMessage(message.chat.id, "Pong! (" + (Date.now() - message.date*1000) + " ms)", {reply_to_message_id: message.message_id});
     }
-    if(message.text.substring(0, 5) == "/dlsc" || message.text == "/dlsc@" + botUsername) {
+    if(message.text.substring(0, 5) == "/dlsc" || message.text.substring(0, 5 + botUsername.length) == "/dlsc@" + botUsername) {
         if(!message.text.split(" ")[1]) {
             bot.sendMessage(message.chat.id, "You may not have provided an link to your command, remember that you need to send the following (for example):\r\n/dlsc https://soundcloud.com/artistname/songtitle", {reply_to_message_id: message.message_id});
             return;

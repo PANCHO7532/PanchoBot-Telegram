@@ -16,6 +16,9 @@ function fetchSoundcloud(sclink) {
     }
 }
 bot.on('message', function(message) {
+    if(message.text == "/start") {
+        bot.sendMessage(message.chat.id, "Commands:\r\n/ping - Check your approximate ping from your location to the bot server.\r\n/dlsc + link - Download a soundcloud song.");
+    }
     if(message.text == "/ping") {
         bot.sendMessage(message.chat.id, "Pong! (" + (Date.now() - message.date*1000) + " ms)", {reply_to_message_id: message.message_id});
     }

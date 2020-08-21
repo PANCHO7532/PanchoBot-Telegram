@@ -1,3 +1,4 @@
+#!/usr/bin/node
 const telegramApi = require('node-telegram-bot-api');
 const botToken = "YOUR_TELEGRAM_TOKEN_HERE";
 const scapikey = "YOUR_SOUNDCLOUD_APIKEY_HERE";

@@ -1,5 +1,6 @@
 # PanchoBot-Telegram
 Multi-Functional bot for Telegram written in Node.JS
+### Warning: this bot is under reconstruction, some functions here may not work
 ## Features
 - Download YouTube videos in Telegram! (by using the extracted link or the direct video sent by the bot)
 - Download SoundCloud songs!
@@ -11,7 +12,7 @@ Well it ain't much at this time, probably i will add more features soon.
 ## Installation
 1) Download everything in this repo inside an empty folder
 2) Open an cmd in that folder
-3) Execute "npm update" or "npm install node-telegram-bot-api ytdl-core request --save"
+3) Execute "npm update --save" or "npm install node-telegram-bot-api ytdl-core sync-request --save"
 4) Open index.js and write in the "token" var, your Telegram Bot Token, if you don't know your token, or you don't have bots yet, go to https://t.me/BotFather
 5) (Optional) Add your SoundCloud API Token in scapikey variable
 6) Execute "node index.js" and have fun!

@@ -33,6 +33,8 @@ for(c = 0; c < process.argv.length; c++) {
     }
 }
 const bot = new telegramApi(botToken, {polling: true});
+var ytdl_queue1 = []; //here will be saved all the first format objects from stage1
+var ytdl_queue2 = []; //here will be saved all the anonfiles links/requests (?)
 function fetchSoundcloud(sclink) {
     var c1 = require('sync-request')("GET", "https://api.soundcloud.com/resolve?url=" + sclink + "&client_id=" + scapikey);
     if(c1["statusCode"] == 404) {

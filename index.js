@@ -8,6 +8,7 @@
 * or code redistribution/packaging.
 */
 const telegramApi = require('node-telegram-bot-api');
+const ytdl = require('ytdl-core');
 var botToken = "YOUR_TELEGRAM_TOKEN_HERE";
 var botUsername = "YOUR_BOT_USERNAME";
 var scapikey = "YOUR_SOUNDCLOUD_APIKEY_HERE";
@@ -32,6 +33,21 @@ for(c = 0; c < process.argv.length; c++) {
             break;
     }
 }
+if(showHelp) {
+    var helpContent = [
+        "\r\nPanchoBot for Telegram v2.7b",
+        "Usage: node script.js [--args -a...]",
+        "",
+        "--botToken, -bt\t\tSet your bot token",
+        "--botUsername, -bu\tSet your bot username in Telegram (required for some command types)",
+        "--scApiKey, -sak\tSet your SoundCloud API key to enable SoundCloud related functions",
+        "--help, -h\t\tDisplay this help text"
+    ];
+    for(c=0; c < helpContent.length; c++) {
+        console.log(helpContent[c]);
+    }
+    process.exit();
+}
 const bot = new telegramApi(botToken, {polling: true});
 var ytdl_queue1 = []; //here will be saved all the first format objects from stage1
 var ytdl_queue2 = []; //here will be saved all the anonfiles links/requests (?)
@@ -46,6 +62,23 @@ function fetchSoundcloud(sclink) {
     } else {
         return JSON.parse(c1["body"]);
     }
+}
+function fetchYoutube(ytlink) {
+    ytdl.getInfo(ytlink).then(function(info){
+        var output1 = "";
+        for(c = 0; c < info.formats.length; c++) {
+            if(info.formats[c]["qualityLabel"] == null && info.formats[c]["videoCodec"] == null) {
+                output1 = "audio-only" + "-" + info.formats[c]["container"] + "-" + info.formats[c]["audioBitrate"] + "kbps$" + info.formats[c]["url"];
+            } else {
+                if(info.formats[c]["hasAudio"] == false && info.formats[c]["audioCodec"] == null) {
+                    output1 = info.formats[c]["qualityLabel"] + "-" + info.formats[c]["container"] + "-" + info.formats[c]["bitrate"] + "kbps-" + info.formats[c].width + "x" + info.formats[c].height + "-noaudio$" + info.formats[c]["url"];
+                } else {
+                    output1 = info.formats[c]["qualityLabel"] + "-" + info.formats[c]["container"] + "-" + info.formats[c]["bitrate"] + "kbps-" + info.formats[c].width + "x" + info.formats[c].height + "$" + info.formats[c]["url"];
+                }
+            }
+            return output1;
+        }
+    });
 }
 bot.on('message', function(message) {
     if(message.text == "/start" || message.text == "/start@" + botUsername) {

@@ -9,6 +9,7 @@
 */
 const telegramApi = require('node-telegram-bot-api');
 const ytdl = require('ytdl-core');
+const ffmpeg = require('ffmpeg-static');
 var botToken = "YOUR_TELEGRAM_TOKEN_HERE";
 var botUsername = "YOUR_BOT_USERNAME";
 var scapikey = "YOUR_SOUNDCLOUD_APIKEY_HERE";

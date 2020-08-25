@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ffmpeg-static": "^4.2.7",
     "node-telegram-bot-api": "^0.50.0",
     "sync-request": "^6.1.0",
     "ytdl-core": "^3.2.2"
